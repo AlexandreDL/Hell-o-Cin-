@@ -1,0 +1,15 @@
+# Pour installer / utiliser easy admin 
+# - composer update
+# - composer require admin
+# - l'installation installer 2 fichiers : config/routes/easy_admin.yml (qui permet de definir l'a route pour acceder a easy admin) et config/packages/easy_admin.yml (qui permet de configurer les entité a manager par easyadmin)
+#
+#
+easy_admin:
+    site_name: 'Rocket corporation'
+    entities:
+        # List the entity class name you want to manage
+        - App\Entity\Casting
+        - App\Entity\Movie
+        - App\Entity\Genre
+    design:
+        brand_color: '#1ABC9C'

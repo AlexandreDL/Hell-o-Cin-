@@ -1,0 +1,85 @@
+security:
+
+    #permet d'indiquer a doctrine comment notre mot de passe va etre encodé en BDD et sur quel entité cela va s'appliquer
+    # note : symfony considera obligatoirement la propriété password comme le mot de passe
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+
+
+    # permet de definir qui va fournir les données utilisateurs
+    # par defaut symfony propose a minima 2 choix
+    # in_memory (A NE PAS UTILISER) = user en dur dans le fichier de conf
+    # entity : permet de fournir des utilisateurs via la BDD
+    # un utilisateur doit avoir un unsername, un mot de passe et un role (il peux aussi avori plusieurs roles de fait l'a propriété s'appelera roles)
+    # la section provider s'associe avec la section "encoders" qui permet d'encoder et decoder le mot de passe de l'utilisateur
+    providers:
+        #in_memory_rocket: { memory: ~ } #type de "fournisseur"
+        rocket_superprovider:
+            entity: #type de provider
+                class: App\Entity\User
+                property: username
+    
+     # permet de definir les regles de mon authentification 
+     # par defaut j'ai 2 section prevue par symfony : les regles de l'environnement de dev et celle globale a mon application (main)
+     # plus en détail firewalls définit si un visiteur est autorisé ou non
+     # comment je peux m'authentifier HTTP basic ou un formulaire
+     # et surtout qui est mon fournisseur de données d'utilisateur lorsque je m'authentifie
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            anonymous: true #permet au visiteur d'acceder a minima a une partie du contenu sans etre loggué
+
+            # activate different ways to authenticate
+
+            # 1 - j'active le mode d'authentification souhaité
+            #http_basic: true
+            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+
+            form_login: true # note HTTP basic et Form login sont incompatibles, j'active ici l'authentication par formulaire
+            # https://symfony.com/doc/current/security/form_login_setup.html
+
+            # j'indique ici quel fournisseur / provider sur lequel va se baser mon systeme d'authentification soit mon HTTP basic
+            provider: rocket_superprovider 
+
+            logout: # j'associe la fonction logout à une route de mon choix . Note: cette route peux etre créée directement dans routes.yml car elle est associé a aucune fonction a executer
+                path: app_logout
+
+            guard:
+                authenticators:
+                    - App\Security\MovieDBAuthenticator
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+
+    # access control alias ACL, permet de definir les acces securisé
+    # lorsque l'on parle d'acces on parle d'url et plus precisement de pattern d'url 
+    # les ACL verifient 2 choses , est ce que la personne est authentifié pour acceder aux url definie et si elles ont le niveau d'accreditation suffisant une fois qu'elle soit loggées
+    
+    # 2 - Je definit quel url / path doivent securisé dans mon application => doit declecncher l'authentification si la personne n'est pas encore loggé
+    access_control:
+        - { path: "^\/backend\/casting\/[a-z]+\/[0-9]+", roles: ROLE_ADMIN} # note ici on a une expresion reguliere qui contient ^/monurl qui signifie mon url qui commence part ...
+        - { path: "^\/backend\/casting\/new\/[a-z]+\/[0-9]+", roles: ROLE_ADMIN} 
+        - { path: "^\/backend\/[a-z]+\/[0-9]+", roles: ROLE_ADMIN, methods: DELETE }
+        - { path: "^\/backend\/[a-z]+\/[0-9]+\/edit", roles: ROLE_ADMIN }
+        - { path: "^\/backend\/[a-z]+\/new", roles: ROLE_ADMIN }
+
+        - { path: "^\/backend\/[a-z]+\/[0-9]+", roles: ROLE_USER} 
+        - { path: "^\/backend", roles: ROLE_USER}
+
+        - { path: ^/ezadmin, roles: ROLE_USER }
+    
+    # la hierarchie de role permet d'eviter une gestion des roles binaire  OUI / NON 
+    # en effet , si on prend le cas d'un admin , un membre et un utilisateur  on aurait quelque chose du genre un admin a au moins les droit des membres  + ceux des utilisateurs , le membre a au moins les roles de l'utilisateurs et l'utilisateur n'a que ses propres acces : un user ne pourra donc pas acceder a des action d'un role supérieur cf admin
+    #
+    # Si on considere la hierarchie de role comme un systeme de "poupée russe" 
+    # on aura la regle suivante ROLE_ADMIN_ROCKET (contient) : ROLE_USER_ROCKET (aussi les droits du role users)
+    # donc role admin aura acces a ses url backend ET celles de easyadmin
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+    

@@ -1,0 +1,13 @@
+# Merci anais <3
+# Début de mise en place avec alice et une relation ManyToOne OneToMany
+#
+App\Entity\Casting:
+    casting_{1..15}:
+        role: '<name()>' 
+        creditOrder: '<numberBetween(1,10)>'
+        movie: '@movie_*' # attention ici @movie fait reference au nom généré ce dessous, je doit prendre en compte l'underscore
+        # ici il faudra ajouter personne
+
+App\Entity\Movie:
+    movie_{1..15}: #movie_1, movie_2... movie_15
+        title: '<text(10)>'

@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{#
+
+ Lien officiel documentation sur la surchage de template d'erreur : https://symfony.com/doc/current/controller/error_pages.html#overriding-the-default-error-templates
+
+ Pour afficher la preview d'une erreur : https://symfony.com/blog/new-in-symfony-2-6-error-page-previews
+
+ ex: http://localhost/app_dev.php/_error/{statusCode} http://localhost/app_dev.php/_error/{statusCode}.{format}
+
+ soit : http://127.0.0.1:8000/_error/404
+
+ voir aussi : bin/console debug:router => _twig_error_test                    ANY        ANY      ANY    /_error/{code}.{_format}
+
+#}
+{% block content %}
+    <div id="custom-404">
+
+        <h1>
+            Cette page n'existe pas 
+        </h1>
+
+        <div class="d-flex justify-content-center">
+            <i class="fas fa-meh-blank"></i>
+            <i class="fas fa-surprise"></i>
+            <i class="fas fa-sad-tear"></i> 
+        </div>
+
+    </div>
+
+{% endblock %}

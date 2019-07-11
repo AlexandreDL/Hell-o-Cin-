@@ -1,0 +1,34 @@
+# merci maria <3
+#App\Entity\Genre: # namespace de l'entité
+#    genre_{1..42}: #le nombre d'iteration d'entité souhaité ici : genre_1, genre_2...genre_23
+#        name: '<word()>' <-- numberBetween(0,5), sentence(),(...)  cf (https://github.com/fzaninotto/Faker#basic-usage)
+
+App\Entity\Genre:
+    genre{1..10}:
+        name: '<word()>' 
+        createdAt : '<dateTimeBetween("-200 days", "now")>'
+        updatedAt : '<dateTimeBetween($createdAt, "now")>'
+        #movies: '10x @movie*' # le *  permet la generation aleatoire de nombre pour complter le nom 
+
+# Pour eviter de faire doublon , on laissera generalement le owner s'occuper de la relation entre 2 tables
+App\Entity\Movie:
+    movie{1..50}:
+        title: '<text(55)>'   
+        createdAt : '<dateTimeBetween("-200 days", "now")>'
+        updatedAt : '<dateTimeBetween($createdAt, "now")>' 
+        genres : '3x @genre*'
+        
+
+App\Entity\Casting:
+    casting_{1..12}:
+        role : '<firstName()> <lastName()>'  # '<jobTitle()>' 
+        creditOrder : '<numberBetween(1, 12)>'
+        movie: '@movie*'
+        person: '@person*'
+      
+
+App\Entity\Person:
+    person_{1..20}:
+        name: '<firstName()> <lastName()>' 
+        createdAt : '<dateTimeBetween("-200 days", "now")>'
+        updatedAt : '<dateTimeBetween($createdAt, "now")>'
