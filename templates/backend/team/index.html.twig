@@ -17,8 +17,8 @@
             <tr>
                 <td>{{ team.id }}</td>
                 <td>
-                    <a href="{{ path('backend_team_show', {'id': team.id}) }}">show</a>
-                    <a href="{{ path('backend_team_edit', {'id': team.id}) }}">edit</a>
+                    <a href="{{ path('backend_team_show', {'id': team.id}) }}" class="btn btn-primary"> <i class="fas fa-eye"></i></a>
+                    <a href="{{ path('backend_team_edit', {'id': team.id}) }}" class="btn btn-primary"> <i class="fas fa-edit"></i></a>
                 </td>
             </tr>
         {% else %}
@@ -29,5 +29,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('backend_team_new') }}">Create new</a>
+    <a href="{{ path('backend_team_new') }}"><button class="btn btn-success" type="submit">Create New</button></a>
 {% endblock %}

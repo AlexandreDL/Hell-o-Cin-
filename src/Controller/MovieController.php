@@ -4,15 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Genre;
 use App\Entity\Movie;
-
 use App\Entity\Casting;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use App\Repository\CastingRepository;
 
-class MovieController extends Controller
+use App\Repository\MovieRepository;
+use App\Repository\CastingRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+class MovieController extends AbstractController
 {
     /**
      * @Route("/", name="movie_index", methods={"GET","POST"})

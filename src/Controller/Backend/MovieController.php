@@ -6,6 +6,7 @@ use App\Entity\Movie;
 use App\Utils\Slugger;
 use App\Form\MovieType;
 use App\Repository\MovieRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\File\File;
@@ -31,9 +32,13 @@ class MovieController extends AbstractController
      */
     public function new(Request $request, Slugger $slugger): Response
     {
-        $variable = $_POST['user'];
-        if($variable!= false);
-
+        if (isset($_POST['username'])) {
+            $username = $_POST['username'];
+        }
+        
+        // $variable = $_POST['user'];
+        // if($variable!= false);
+        
         $movie = new Movie();
         $form = $this->createForm(MovieType::class, $movie);
         $form->handleRequest($request);

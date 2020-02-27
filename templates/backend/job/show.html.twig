@@ -18,9 +18,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('backend_job_index') }}">back to list</a>
+    <a href="{{ path('backend_job_index') }}"><button class="btn btn-dark my-2 my-sm-0" type="submit">Back to list</button></a>
 
-    <a href="{{ path('backend_job_edit', {'id': job.id}) }}">edit</a>
+    <a href="{{ path('backend_job_edit', {'id': job.id}) }}"><button class="btn btn-success" type="submit">Edit</button></a>
 
     {{ include('backend/job/_delete_form.html.twig') }}
 {% endblock %}
